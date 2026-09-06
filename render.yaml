@@ -1,0 +1,19 @@
+services:
+  - type: web
+    name: wodashtech
+    runtime: python
+    plan: free
+    buildCommand: pip install -r requirements.txt
+    startCommand: gunicorn app:app
+    healthCheckPath: /health
+    envVars:
+      - key: SECRET_KEY
+        generateValue: true
+      - key: DATABASE_URL
+        fromDatabase:
+          name: wodashtech-db
+          property: connectionString
+
+databases:
+  - name: wodashtech-db
+    plan: free
